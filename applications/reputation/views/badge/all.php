@@ -2,7 +2,7 @@
 
 <h1><?php echo T('Manage Badges'); ?></h1>
 <div class="Info">
-   <?php echo Anchor(T('Add Badge'), 'reputation/achievement/manage', 'Popup SmallButton'); ?>
+   <?php echo Anchor(T('Add Badge'), 'reputation/badge/manage', 'Popup SmallButton'); ?>
 </div>
 <table id="Users" class="AltColumns">
    <thead>
@@ -21,9 +21,9 @@
    <tbody>
       <?php
       if ($this->BadgeData && $this->BadgeData->NumRows() > 0) : 
-         include($this->FetchViewLocation('achievements'));
+         include($this->FetchViewLocation('badges'));
       else :
-         echo '<tr><td colspan="' . (CheckPermission('Reputation.Badges.Give') ? '7' : '6') . '">' . T('No achievements yet.') . '</td></tr>';
+         echo '<tr><td colspan="' . (CheckPermission('Reputation.Badges.Give') ? '7' : '6') . '">' . T('No badges yet.') . '</td></tr>';
       endif; 
       ?>
    </tbody>

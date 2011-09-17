@@ -7,13 +7,13 @@ $Session = Gdn::Session(); ?>
 
    <tr class="<?php if ($Alt)echo 'Alt '; if (!$Badge->Visible) echo 'HiddenBadge'; ?>">
       
-      <td><strong><?php echo Anchor($Badge->Name, 'achievement/'.$Badge->BadgeID, 'Title'); ?></strong></td>           
+      <td><strong><?php echo Anchor($Badge->Name, 'badge/'.$Badge->BadgeID, 'Title'); ?></strong></td>           
       
       <?php if (CheckPermission('Reputation.Badges.Give')) : ?>
       <td><?php 
-         // Give achievement
+         // Give badge
          if ($Session->CheckPermission('Reputation.Badges.Give') && $Badge->Active)
-            echo Anchor(T('Give to Users'), 'reputation/achievement/give/'.$Badge->BadgeID, 'GiveBadge SmallButton Popup'); ?>
+            echo Anchor(T('Give to Users'), 'reputation/badge/give/'.$Badge->BadgeID, 'GiveBadge SmallButton Popup'); ?>
       </td>
       <?php endif; ?>
       
@@ -22,10 +22,10 @@ $Session = Gdn::Session(); ?>
       <td><?php echo Gdn_Format::Text($Badge->CountRecipients); ?></td>
       
       <td><?php 
-          // Disable achievement
+          // Disable badge
          if (CheckPermission('Reputation.Badges.Manage')) {
             echo Anchor(T($Badge->Active ? 'Yes' : 'No'), 
-               'reputation/achievement/disable/'.$Badge->BadgeID.'/'.$AjaxString, 
+               'reputation/badge/disable/'.$Badge->BadgeID.'/'.$AjaxString, 
                'DisableBadge', array('title'=> ($Badge->Active ? 'Disable' : 'Enable')));
          }
          else
@@ -33,10 +33,10 @@ $Session = Gdn::Session(); ?>
       </td>
       
       <td><?php 
-         // Hide achievement
+         // Hide badge
          if (CheckPermission('Reputation.Badges.Manage')) {
             echo Anchor(T($Badge->Visible == '1' ? 'Yes' : 'No'), 
-               'reputation/achievement/hide/'.$Badge->BadgeID.'/'.$AjaxString, 
+               'reputation/badge/hide/'.$Badge->BadgeID.'/'.$AjaxString, 
                'HideBadge', array('title'=> ($Badge->Visible ? 'Hide' : 'Show')));
          }
          else
@@ -44,13 +44,13 @@ $Session = Gdn::Session(); ?>
       </td> 
       
       <td><?php 
-         // Edit achievement
+         // Edit badge
          if (CheckPermission('Reputation.Badges.Manage'))
-            echo Anchor(T('Edit'), 'reputation/achievement/manage/'.$Badge->BadgeID, 'EditBadge SmallButton Popup');
+            echo Anchor(T('Edit'), 'reputation/badge/manage/'.$Badge->BadgeID, 'EditBadge SmallButton Popup');
          
-         // Delete achievement
+         // Delete badge
          if (CheckPermission('Reputation.Badges.Manage'))
-            echo Anchor(T('Delete'), 'reputation/achievement/delete/'.$Badge->BadgeID.'/'.$AjaxString, 'DeleteBadge Popup SmallButton'); ?>
+            echo Anchor(T('Delete'), 'reputation/badge/delete/'.$Badge->BadgeID.'/'.$AjaxString, 'DeleteBadge Popup SmallButton'); ?>
       </td>
       
    </tr>

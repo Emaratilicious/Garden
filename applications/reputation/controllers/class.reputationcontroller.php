@@ -46,7 +46,7 @@ class ReputationController extends Gdn_Controller {
          
          // Reputation goodness
          $this->AddCssFile('reputation.css');
-         $this->AddJsFile('achievement.js');
+         $this->AddJsFile('badge.js');
          $this->AddJsFile('reputation.js');
          $this->AddJsFile('subscription.js');
       }

@@ -31,7 +31,7 @@ class UserBadgeModel extends ReputationModel {
    }
       
    /**
-    * Get achievements for a single user.
+    * Get badges for a single user.
     */
    public function GetBadges($UserID = '') {
       return $this->SQL
@@ -48,7 +48,7 @@ class UserBadgeModel extends ReputationModel {
    }
    
    /**
-    * Get users who have an achievement.
+    * Get users who have an badge.
     */
    public function GetUsers($BadgeID = '') {
       return $this->SQL
@@ -61,7 +61,7 @@ class UserBadgeModel extends ReputationModel {
    }
 
    /**
-    * Get number of users who have this achievement.
+    * Get number of users who have this badge.
     * 
     * @since 2.1.0
     * @access public
@@ -84,14 +84,14 @@ class UserBadgeModel extends ReputationModel {
       // Delete it
       $this->Delete(array('UserBadgeID' => $UserBadgeID));
       
-      // Adjust user's achievement count
+      // Adjust user's badge count
       $BadgeCount = $this->BadgeCount($UserBadge->UserID);
 		$this->SQL->Update('User')
 			->Set('CountBadges', $BadgeCount)
 			->Where('UserID', $UserBadge->UserID)
 			->Put();
 			
-      // Adjust's achievement's recipient count
+      // Adjust's badge's recipient count
 		$RecipientCount = $this->RecipientCount($UserBadge->BadgeID);
 		$this->SQL->Update('Badge')
 			->Set('CountRecipients', $RecipientCount)
@@ -102,7 +102,7 @@ class UserBadgeModel extends ReputationModel {
    }
    
    /**
-    * Save given user achievement.
+    * Save given user badge.
     * 
     * @since 2.1.0
     * @access public
@@ -144,18 +144,18 @@ class UserBadgeModel extends ReputationModel {
             $Fields['UserID'] = $UserID;
             $Saved = $this->SQL->Insert($this->Name, $Fields);
             
-            // Update the cached achievement count per user
+            // Update the cached badge count per user
       		$BadgeCount = $this->BadgeCount($UserID);
       		$this->SQL->Update('User')
       			->Set('CountBadges', $BadgeCount)
       			->Where('UserID', $UserID)
       			->Put();
             
-            // Notify users of their achievement.
-            AddActivity($Session->UserID, 'Badge', '', $UserID, '/achievement/'.$Fields['BadgeID'], FALSE);
+            // Notify users of their badge.
+            AddActivity($Session->UserID, 'Badge', '', $UserID, '/badge/'.$Fields['BadgeID'], FALSE);
          }
          
-         // Update the cached recipient count on the achievement
+         // Update the cached recipient count on the badge
    		$RecipientCount = $this->RecipientCount($Fields['BadgeID']);
    		$this->SQL->Update('Badge')
    			->Set('CountRecipients', $RecipientCount)

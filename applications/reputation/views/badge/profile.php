@@ -11,14 +11,14 @@ if ($this->BadgeData && $this->BadgeData->NumRows() > 0) : ?>
             <div class="ToggleFlyout OptionsMenu">
                <div class="MenuTitle">Options</div>
                <ul class="Flyout MenuItems">
-                  <li><?php echo Anchor(T('Revoke'), 'reputation/achievement/revoke/'.$Badge->UserBadgeID.'/'.$Session->TransientKey(), 'RevokeBadge'); ?></li>
+                  <li><?php echo Anchor(T('Revoke'), 'reputation/badge/revoke/'.$Badge->UserBadgeID.'/'.$Session->TransientKey(), 'RevokeBadge'); ?></li>
                </ul>
             </div>
          </div>   
          <?php endif; ?>
          
          <div class="ItemContent Badge">
-            <?php echo Anchor($Badge->Name, 'achievement/'.$Badge->BadgeID, 'Title'); ?>            
+            <?php echo Anchor($Badge->Name, 'badge/'.$Badge->BadgeID, 'Title'); ?>            
             <div class="Meta">
                <span class="DateInserted"><?php echo T('Earned') . ' ' . Gdn_Format::Date($Badge->DateReceived); ?></span>
                <span class="Reason"><?php echo T('Reason') . ': ' . Gdn_Format::Text($Badge->Reason); ?></span>     
@@ -31,6 +31,6 @@ if ($this->BadgeData && $this->BadgeData->NumRows() > 0) : ?>
 
 <?php else : ?>
 
-   <div class="Empty"><?php echo T('No achievements yet.'); ?></div>
+   <div class="Empty"><?php echo T('No badges yet.'); ?></div>
 
 <?php endif; ?>

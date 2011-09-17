@@ -4,7 +4,7 @@
  *
  * @package Reputation
  * 
- * @todo UserModel Search - match by achievement name
+ * @todo UserModel Search - match by badge name
  */
 class ReputationHooks implements Gdn_IPlugin {   
    /**
@@ -15,7 +15,7 @@ class ReputationHooks implements Gdn_IPlugin {
 	 */
    public function Base_GetAppSettingsMenuItems_Handler(&$Sender) {
       $Menu = &$Sender->EventArguments['SideMenu'];
-      $Menu->AddLink('Reputation', T('Badges'), 'reputation/achievement/all', 'Reputation.Badges.Manage');
+      $Menu->AddLink('Reputation', T('Badges'), 'reputation/badge/all', 'Reputation.Badges.Manage');
       $Menu->AddLink('Reputation', T('Subscriptions'), 'reputation/subscription/all', 'Reputation.Subscriptions.Manage');
       //$Menu->AddLink('Reputation', T('Likes'), 'reputation/', 'Reputation.');
    }
@@ -114,12 +114,12 @@ class ReputationHooks implements Gdn_IPlugin {
          if (is_numeric($CountBadges) && $CountBadges > 0)
             $BadgesHtml .= '<span>'.$CountBadges.'</span>';
          
-         $Sender->AddProfileTab($Badges, 'profile/achievements/'.$Sender->User->UserID.'/'.urlencode($Sender->User->Name), 'Badges', $BadgesHtml);
+         $Sender->AddProfileTab($Badges, 'profile/badges/'.$Sender->User->UserID.'/'.urlencode($Sender->User->Name), 'Badges', $BadgesHtml);
       }
    }
    
    /**
-    * Show user's achievements in profile.
+    * Show user's badges in profile.
     */
    public function ProfileController_Badges_Create($Sender) {
       $Sender->Permission('Reputation.Badges.View');
@@ -132,7 +132,7 @@ class ReputationHooks implements Gdn_IPlugin {
 		$Sender->GetUserInfo($UserReference, $Username);
       $Sender->SetTabView('Badges', 'profile', 'Badge', 'Reputation');
       
-      // Get User's achievements
+      // Get User's badges
       $UserBadgeModel = new UserBadgeModel();
       $Sender->BadgeData = $UserBadgeModel->GetBadges($Sender->User->UserID);
       
@@ -140,7 +140,7 @@ class ReputationHooks implements Gdn_IPlugin {
    }
    
    /**
-    * Add 'Give achievement' button profiles.
+    * Add 'Give badge' button profiles.
     */
    public function ProfileController_X_Hander($Sender) {
       if (CheckPermission('Reputation.Badges.Give')) {

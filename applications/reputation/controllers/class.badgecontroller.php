@@ -1,12 +1,12 @@
 <?php if (!defined('APPLICATION')) exit();
 /**
- * Achievement Controller.
+ * Badge Controller.
  * 
  * @package Reputation
  */
  
 /**
- * Individual achievements and doling to users.
+ * Individual badges and doling to users.
  * 
  * @since 2.1.0
  * @package Reputation
@@ -17,7 +17,7 @@
  * @todo Requestable
  * @todo Graduated abilities
  */
-class AchievementController extends ReputationController {   
+class BadgeController extends ReputationController {   
    /**
     * Before any call to the controller.
     * 
@@ -26,74 +26,74 @@ class AchievementController extends ReputationController {
     */
    public function Initialize() {
       parent::Initialize();
-      $this->Title('Achievements');
+      $this->Title('Badges');
    }
    
    /**
-    * Manage achievements.
+    * Manage badges.
     * 
     * @since 2.1.0
     * @access public
     */
    public function All() {
-      $this->Permission('Reputation.Achievements.Manage');
+      $this->Permission('Reputation.Badges.Manage');
       
-      $this->AchievementData = $this->AchievementModel->GetList();
+      $this->BadgeData = $this->BadgeModel->GetList();
       
-      $this->AddSideMenu('reputation/achievement/all'); 
+      $this->AddSideMenu('reputation/badge/all'); 
       $this->Render();
    }
    
    /**
-    * Delete an achievement & revoke from all users.
+    * Delete an badge & revoke from all users.
     * 
     * @since 2.1.0
     * @access public
     */
-   public function Delete($AchievementID = '') {
-      $this->Permission('Reputation.Achievements.Manage');
+   public function Delete($BadgeID = '') {
+      $this->Permission('Reputation.Badges.Manage');
       $Session = Gdn::Session();
       
-      // Validate AchievementID
-      if (!is_numeric($AchievementID))
-         Redirect('reputation/achievement/all');
+      // Validate BadgeID
+      if (!is_numeric($BadgeID))
+         Redirect('reputation/badge/all');
       
       // Form setup
-      $this->Form->SetModel($this->AchievementModel);
+      $this->Form->SetModel($this->BadgeModel);
       
       // Form submitted (confirmation)
       if ($this->Form->AuthenticatedPostBack()) {
          // Delete & revoke
-         $this->AchievementModel->Delete(array('AchievementID' => $AchievementID));
-         $this->UserAchievementModel->Delete(array('AchievementID' => $AchievementID));
+         $this->BadgeModel->Delete(array('BadgeID' => $BadgeID));
+         $this->UserBadgeModel->Delete(array('BadgeID' => $BadgeID));
          
          // Success & redirect
-         $this->InformMessage(T('Achievement deleted.'));
-         $this->RedirectUrl = Url('reputation/achievement/all');
+         $this->InformMessage(T('Badge deleted.'));
+         $this->RedirectUrl = Url('reputation/badge/all');
       }
       else {
          // Get info for confirmation
-         $this->Achievement = $this->AchievementModel->GetID($AchievementID);
+         $this->Badge = $this->BadgeModel->GetID($BadgeID);
       }
       
       $this->Render();
    }
    
    /**
-    * Disable/enable an achievement from being given. It will still show on users who have it.
+    * Disable/enable an badge from being given. It will still show on users who have it.
     * 
     * @since 2.1.0
     * @access public
     */
-   public function Disable($AchievementID = '', $TransientKey = '') {
-      $this->Permission('Reputation.Achievements.Manage');
+   public function Disable($BadgeID = '', $TransientKey = '') {
+      $this->Permission('Reputation.Badges.Manage');
       $Session = Gdn::Session();
       
-      if ($Session->ValidateTransientKey($TransientKey) && is_numeric($AchievementID)) {
+      if ($Session->ValidateTransientKey($TransientKey) && is_numeric($BadgeID)) {
          // Reverse whether it's active
-         $Value = ($this->AchievementModel->GetID($AchievementID)->Active) ? 0 : 1;
-         $this->AchievementModel->SetProperty($AchievementID, 'Active', $Value);
-         $Message = ($Value) ? 'Achievement disabled.' : 'Achievement enabled.';
+         $Value = ($this->BadgeModel->GetID($BadgeID)->Active) ? 0 : 1;
+         $this->BadgeModel->SetProperty($BadgeID, 'Active', $Value);
+         $Message = ($Value) ? 'Badge disabled.' : 'Badge enabled.';
          $this->InformMessage($Message);
       }
       
@@ -105,30 +105,30 @@ class AchievementController extends ReputationController {
    }
    
    /**
-    * Give selected achievement to 1 or more users.    
+    * Give selected badge to 1 or more users.    
     * 
     * @since 2.1.0
     * @access public
     */
-   public function Give($AchievementID = '') {
-      $this->Permission('Reputation.Achievements.Give');
+   public function Give($BadgeID = '') {
+      $this->Permission('Reputation.Badges.Give');
       
-      // Validate AchievementID
-      if (!is_numeric($AchievementID))
-         Redirect('reputation/achievement/all');
+      // Validate BadgeID
+      if (!is_numeric($BadgeID))
+         Redirect('reputation/badge/all');
       
       // Get info & confirm enabled  
-      $this->Achievement = $this->AchievementModel->GetID($AchievementID);
-      if (!$this->Achievement->Active)
-         $this->Form->AddError('Achievement is not available.');
+      $this->Badge = $this->BadgeModel->GetID($BadgeID);
+      if (!$this->Badge->Active)
+         $this->Form->AddError('Badge is not available.');
    
       // Form setup
-      $this->Form->SetModel($this->UserAchievementModel);
+      $this->Form->SetModel($this->UserBadgeModel);
       
       // Form submitted
       if ($this->Form->AuthenticatedPostBack()) {
-         // Set AchievementID
-         $this->Form->SetFormValue('AchievementID', $AchievementID);
+         // Set BadgeID
+         $this->Form->SetFormValue('BadgeID', $BadgeID);
          
          // Set recipients
          $RecipientUserIDs = array();
@@ -145,8 +145,8 @@ class AchievementController extends ReputationController {
          
          // Give to named users
          if ($this->Form->Save()) {
-            $this->InformMessage(T('Gave achievement to users.'));
-            $this->RedirectUrl = Url('reputation/achievement/all');
+            $this->InformMessage(T('Gave badge to users.'));
+            $this->RedirectUrl = Url('reputation/badge/all');
          }
       }
       
@@ -154,23 +154,23 @@ class AchievementController extends ReputationController {
    }
    
    /**
-    * Give any achievement to selected user.
+    * Give any badge to selected user.
     * 
     * @since 2.1.0
     * @access public
     */
    public function GiveUser($UserID = '', $Username = '') {
       // NOT READY YET
-      Redirect('reputation/achievement/all');
+      Redirect('reputation/badge/all');
       
-      $this->Permission('Reputation.Achievements.Give');
+      $this->Permission('Reputation.Badges.Give');
       
       // Validate UserID
       if (!is_numeric($UserID))
-         Redirect('reputation/achievement/all');
+         Redirect('reputation/badge/all');
    
       // Form setup
-      $this->Form->SetModel($this->UserAchievementModel);
+      $this->Form->SetModel($this->UserBadgeModel);
       
       // Form submitted
       if ($this->Form->AuthenticatedPostBack()) {
@@ -178,9 +178,9 @@ class AchievementController extends ReputationController {
          $this->FormSetValue('RecipientUserID', array($UserID));
       
          // Validation
-         $this->UserAchievementModel->ValidateModel();
+         $this->UserBadgeModel->ValidateModel();
          
-         // Achievement successfully saved
+         // Badge successfully saved
          if ($this->Form->Save()) {
             
          }
@@ -190,26 +190,26 @@ class AchievementController extends ReputationController {
          $UserModel = new UserModel();
          $this->User = $UserModel->GetID($UserID);
          
-         // Get achievement list for dropdown
-         $this->AchievementData = $this->AchievementModel->GetMenu();
+         // Get badge list for dropdown
+         $this->BadgeData = $this->BadgeModel->GetMenu();
       }
    }
    
    /**
-    * Hide/Unhide an achievement from being listed. It will still show on users who have it.
+    * Hide/Unhide an badge from being listed. It will still show on users who have it.
     * 
     * @since 2.1.0
     * @access public
     */
-   public function Hide($AchievementID = '', $TransientKey = '') {
-      $this->Permission('Reputation.Achievements.Manage');
+   public function Hide($BadgeID = '', $TransientKey = '') {
+      $this->Permission('Reputation.Badges.Manage');
       $Session = Gdn::Session();
       
-      if ($Session->ValidateTransientKey($TransientKey) && is_numeric($AchievementID)) {
+      if ($Session->ValidateTransientKey($TransientKey) && is_numeric($BadgeID)) {
          // Reverse visibility
-         $Value = ($this->AchievementModel->GetID($AchievementID)->Visible) ? 0 : 1;
-         $this->AchievementModel->SetProperty($AchievementID, 'Visible', $Value);
-         $Message = ($Value) ? 'Achievement unhidden.' : 'Achievement hidden.';
+         $Value = ($this->BadgeModel->GetID($BadgeID)->Visible) ? 0 : 1;
+         $this->BadgeModel->SetProperty($BadgeID, 'Visible', $Value);
+         $Message = ($Value) ? 'Badge unhidden.' : 'Badge hidden.';
          $this->InformMessage($Message);
       }
       
@@ -221,81 +221,81 @@ class AchievementController extends ReputationController {
    }
    
    /**
-    * View an achievement.    
+    * View an badge.    
     * 
     * @since 2.1.0
     * @access public
     */
-   public function Index($AchievementID = '', $Name = '') {
-      $this->Permission('Reputation.Achievements.View');
+   public function Index($BadgeID = '', $Name = '') {
+      $this->Permission('Reputation.Badges.View');
       
-      $this->Achievement = $this->AchievementModel->GetID($AchievementID);
-      $this->SetData('Achievement', $this->Achievement);
+      $this->Badge = $this->BadgeModel->GetID($BadgeID);
+      $this->SetData('Badge', $this->Badge);
       
-      $this->UserData = $this->UserAchievementModel->GetUsers($AchievementID);
+      $this->UserData = $this->UserBadgeModel->GetUsers($BadgeID);
       
-      $this->AddModule('GiveAchievementModule');
+      $this->AddModule('GiveBadgeModule');
       
       $this->Render();
    }
    
    /**
-    * Create or edit an achievement.
+    * Create or edit an badge.
     * 
     * @since 2.1.0
     * @access public
     */
-   public function Manage($AchievementID = '') {
-      $this->Permission('Reputation.Achievements.Manage');
+   public function Manage($BadgeID = '') {
+      $this->Permission('Reputation.Badges.Manage');
       
       // Form setup
-      $this->Form->SetModel($this->AchievementModel);
+      $this->Form->SetModel($this->BadgeModel);
       $this->Form->ShowErrors();
             
-      $Insert = (is_numeric($AchievementID)) ? FALSE : TRUE;
+      $Insert = (is_numeric($BadgeID)) ? FALSE : TRUE;
       
       // Form submitted
       if ($this->Form->AuthenticatedPostBack()) {
-         // If editing, set AchievementID
+         // If editing, set BadgeID
          if (!$Insert)
-            $this->Form->SetFormValue('AchievementID', $AchievementID);
+            $this->Form->SetFormValue('BadgeID', $BadgeID);
       
          // Validation
          //$this->Form->ValidateModel();
          
-         // Achievement successfully saved
+         // Badge successfully saved
          if ($this->Form->Save()) {
             // Report success and go to list
-            $AchievementName = $this->Form->GetFormValue('Name');
-            $Message = ($Insert) ? T('Created new achievement') : T('Updated achievement');
-            $Message .= ' &ldquo;' . $AchievementName. '&rdquo;';
+            $BadgeName = $this->Form->GetFormValue('Name');
+            $Message = ($Insert) ? T('Created new badge') : T('Updated badge');
+            $Message .= ' &ldquo;' . $BadgeName. '&rdquo;';
             $this->InformMessage($Message);
-            $this->RedirectUrl = Url('reputation/achievement/all');
+            $this->RedirectUrl = Url('reputation/badge/all');
          }
       }
       elseif (!$Insert) {
          // Editing an badge
-         $this->Achievement = $this->AchievementModel->GetID($AchievementID);
-         $this->Form->SetData($this->Achievement);
+         $this->Badge = $this->BadgeModel->GetID($BadgeID);
+         $this->Form->SetData($this->Badge);
       }
       
       $this->Render();
    }
    
    /**
-    * Revoke an achievement from a user.
+    * Revoke an badge from a user.
     * 
     * @since 2.1.0
     * @access public
     */
-   public function Revoke($UserAchievementID = '', $TransientKey = '') {
-      $this->Permission('Reputation.Achievements.Manage');
+   public function Revoke($UserBadgeID = '', $TransientKey = '') {
+      $this->Permission('Reputation.Badges.Manage');
       $Session = Gdn::Session();
       
-      if ($Session->ValidateTransientKey($TransientKey) && is_numeric($UserAchievementID)) {
-         $UserID = $this->UserAchievementModel->Revoke($UserAchievementID);
-         $this->InformMessage(T('Revoked achievement.'));
-         $this->RedirectUrl = Url('profile/achievements/'.$UserID.'/x');
+      if ($Session->ValidateTransientKey($TransientKey) && is_numeric($UserBadgeID)) {
+         $UserID = $this->UserBadgeModel->Revoke($UserBadgeID);
+         $this->InformMessage(T('Revoked badge.'));
+         $this->RedirectUrl = Url('profile/badges/'.$UserID.'/x');
       }
          
       $this->SetView404();

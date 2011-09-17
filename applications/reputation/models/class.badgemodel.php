@@ -28,7 +28,7 @@ class BadgeModel extends ReputationModel {
    }
    
    /**
-    * Get achievements list for viewing.
+    * Get badges list for viewing.
     */
    public function GetList() {
       if (!CheckPermission('Reputation.Badges.Give') && !CheckPermission('Reputation.Badges.Manage'))
@@ -40,7 +40,7 @@ class BadgeModel extends ReputationModel {
    }
    
    /**
-    * Get achievements for dropdown.
+    * Get badges for dropdown.
     */
    public function GetMenu() {
       $this->SQL

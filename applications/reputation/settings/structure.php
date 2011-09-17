@@ -38,7 +38,7 @@ $Construct->Table('UserBadge')
    ->Column('InsertUserID', 'int')
    ->Set($Explicit, $Drop);
 
-// Add achievement count to Users
+// Add badge count to Users
 $Construct->Table('User')
    ->Column('CountBadges', 'int', 0)
    ->Set();
@@ -107,7 +107,7 @@ $Construct->Table('UserComment')
 ///  %7 = he/she
 ///  %8 = RouteCode & Route
 
-// X got an achievement
+// X got an badge
 if ($SQL->GetWhere('ActivityType', array('Name' => 'Badge'))->NumRows() == 0)
    $SQL->Insert('ActivityType', array(
       'AllowComments' => '1', 

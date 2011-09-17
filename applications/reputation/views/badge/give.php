@@ -16,7 +16,7 @@ $this->Title(T('Give an Badge')); ?>
    echo '<p>', $this->Form->Label('Reason (optional)', 'Reason');
    echo $this->Form->TextBox('Reason', array('MultiLine' => TRUE)), '</p>';
    
-   echo Anchor('Cancel', 'achievement/'.$this->Badge->BadgeID);
+   echo Anchor('Cancel', 'badge/'.$this->Badge->BadgeID);
    
    echo $this->Form->Close('Give Badge');
    ?>

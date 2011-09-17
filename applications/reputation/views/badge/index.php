@@ -12,7 +12,7 @@ $this->Title(T('View Badge') . ': ' . $this->Badge->Name); ?>
 
 <?php if ($this->UserData) : ?>
 
-<h2><?php echo $this->Badge->CountRecipients . ' ' . T('users have earned this achievement'); ?></h2>
+<h2><?php echo $this->Badge->CountRecipients . ' ' . T('users have earned this badge'); ?></h2>
 
 <ul>
    <?php foreach($this->UserData as $User) : ?>
@@ -22,8 +22,8 @@ $this->Title(T('View Badge') . ': ' . $this->Badge->Name); ?>
 
 <?php else : ?>
 
-<p><?php echo T('No one has earned this achievement yet.'); ?></p>
+<p><?php echo T('No one has earned this badge yet.'); ?></p>
 
 <?php endif; ?>
 
-<?php echo Anchor('Back to Badges', 'profile/achievements'); ?>
+<?php echo Anchor('Back to Badges', 'profile/badges'); ?>
