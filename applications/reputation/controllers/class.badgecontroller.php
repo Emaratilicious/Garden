@@ -235,6 +235,7 @@ class BadgeController extends ReputationController {
       $this->UserData = $this->UserBadgeModel->GetUsers($BadgeID);
       
       $this->AddModule('GiveBadgeModule');
+      $this->MasterView = 'default';
       
       $this->Render();
    }

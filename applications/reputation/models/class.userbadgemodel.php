@@ -42,7 +42,7 @@ class UserBadgeModel extends ReputationModel {
          ->Select('ub.DateCompleted')
          ->From('UserBadge ub')
          ->Join('Badge b', 'b.BadgeID = ub.BadgeID', 'left')
-         ->Where('ua.UserID', $UserID)
+         ->Where('ub.UserID', $UserID)
          ->OrderBy('b.Name', 'asc')
          ->Get();
    }

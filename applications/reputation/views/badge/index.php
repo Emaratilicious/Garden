@@ -1,13 +1,9 @@
 <?php if (!defined('APPLICATION')) exit();
 $Session = Gdn::Session();
-
-if (!function_exists('WriteOptions'))
-   include($this->FetchViewLocation('helper_functions'));
    
 $this->Title(T('View Badge') . ': ' . $this->Badge->Name); ?>
 
 <h1><?php echo Gdn_Format::Text($this->Badge->Name); ?></h1>
-<?php WriteOptions($this->Badge, $this, $Session); ?>
 <p><?php echo Gdn_Format::Text($this->Badge->Body); ?></p>
 
 <?php if ($this->UserData) : ?>
